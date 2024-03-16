@@ -21,37 +21,35 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @EnableWebSecurity
 public class WebConfig implements WebMvcConfigurer {
-	 
-	    @Autowired
-	    private FilterToken filter;
-	
-		public void addCorsMappings(CorsRegistry registry) {
-	        registry.addMapping("/**");
-	    }
-	    
-	    @Bean
-	    public SecurityFilterChain sfc (HttpSecurity httpSec) throws Exception {
-	    	return httpSec.csrf().disable()
-	    			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	    			.and().authorizeHttpRequests()
-	    			.requestMatchers(HttpMethod.POST,"/login")
-	    			.permitAll()
-	    			.anyRequest().authenticated()
-	    			.and().addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
-	    			.build();
-	    }
-	    
-	    
-	    @Bean
-	    public AuthenticationManager authM (AuthenticationConfiguration authConfig) throws Exception {
-	    	return authConfig.getAuthenticationManager();
-	    	
-	    }
-	    
-	    @Bean
-	    public PasswordEncoder passEncod () {
-	    	return new BCryptPasswordEncoder();
-	    }
-	    
-	    
+
+	@Autowired
+	private FilterToken filter;
+
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**");
+	}
+
+	@Bean
+	public SecurityFilterChain sfc(HttpSecurity httpSec) throws Exception {
+		return httpSec.csrf(csrf -> csrf.disable())
+				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(requests -> requests
+						.requestMatchers(HttpMethod.POST, "/login")
+						.permitAll()
+						.anyRequest().authenticated())
+				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+				.build();
+	}
+
+	@Bean
+	public AuthenticationManager authM(AuthenticationConfiguration authConfig) throws Exception {
+		return authConfig.getAuthenticationManager();
+
+	}
+
+	@Bean
+	public PasswordEncoder passEncod() {
+		return new BCryptPasswordEncoder();
+	}
+
 }
