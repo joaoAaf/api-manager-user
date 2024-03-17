@@ -28,11 +28,11 @@ public class Instantiation implements CommandLineRunner {
 		
 		if(userRepo.count() == 0) {
 			User user1 = new User(null, "Fulano de Tal", "fulano@gmail.com", "fulano","123456");
-			userServ.insert(user1);
+			userServ.insertUser(user1);
 			User user2 = new User(null, "Sicrano da Silva", "sicrano@gmail.com", "sicrano","123456");
-			userServ.insert(user2);
+			userServ.insertUser(user2);
 			User user3 = new User(null, "Beltrano Costa", "beltrano@gmail.com", "beltrano","123456");
-			userServ.insert(user3);
+			userServ.insertUser(user3);
 		}
 		
 	}

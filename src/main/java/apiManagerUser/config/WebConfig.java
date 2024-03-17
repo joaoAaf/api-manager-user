@@ -34,7 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
 		return httpSec.csrf(csrf -> csrf.disable())
 				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(requests -> requests
-						.requestMatchers(HttpMethod.POST, "/login")
+						.requestMatchers(HttpMethod.POST, "/login", "/users")
 						.permitAll()
 						.anyRequest().authenticated())
 				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

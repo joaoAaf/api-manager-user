@@ -31,7 +31,7 @@ public class UserService {
 		return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 
-	public User insert(User user) {
+	public User insertUser(User user) {
 		user.setPass(passEnc().encode(user.getPass()));
 		return repo.insert(user);
 	}
