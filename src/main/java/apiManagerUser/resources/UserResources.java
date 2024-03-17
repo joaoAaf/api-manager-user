@@ -1,11 +1,11 @@
 package apiManagerUser.resources;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,10 +27,14 @@ public class UserResources {
 	private UserService service;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<UserDTO>> findAll() {
-		List<User> list = service.findAll();
-		List<UserDTO> listDTO = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDTO);
+	public ResponseEntity<UserDTO> getUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String loggedInUserId = authentication.getName();
+		User user = service.findById(loggedInUserId);
+		if (user == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(new UserDTO(user));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
