@@ -8,8 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import apiManagerUser.domain.User;
-import apiManagerUser.dto.CredentialsDTO;
-import apiManagerUser.dto.UserDTO;
+import apiManagerUser.dto.UserMod;
 import apiManagerUser.repository.UserRepository;
 import apiManagerUser.services.exception.ObjectNotFoundException;
 
@@ -55,9 +54,9 @@ public class UserService {
 		newUser.setPass(user.getPass());
 	}
 
-	public User fromDTO(UserDTO userDto, CredentialsDTO credentialsDto) {
-		return new User(userDto.getId(), userDto.getName(), userDto.getEmail(), credentialsDto.getLogin(),
-				credentialsDto.getPass());
+	public User fromDTO(UserMod userDto) {
+		return new User(userDto.getId(), userDto.getName(), userDto.getEmail(), userDto.getLogin(), 
+		userDto.getPass());
 	}
 
 }
