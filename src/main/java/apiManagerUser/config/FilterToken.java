@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import apiManagerUser.repository.AdminRepository;
+import apiManagerUser.repository.UserRepository;
 import apiManagerUser.services.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +22,7 @@ public class FilterToken extends OncePerRequestFilter {
 	private TokenService tokenService;
 	
 	@Autowired
-	private AdminRepository adminRepo;
+	private UserRepository adminRepo;
 	
 	
 	@Override
@@ -37,9 +37,9 @@ public class FilterToken extends OncePerRequestFilter {
 			
 			var subject = this.tokenService.getSubject(token);
 			
-			var admin = this.adminRepo.findByLogin(subject);
+			var user = this.adminRepo.findByLogin(subject);
 			
-			var authentication = new UsernamePasswordAuthenticationToken(admin, null, admin.getAuthorities());
+			var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}

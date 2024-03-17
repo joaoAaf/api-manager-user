@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import apiManagerUser.domain.Admin;
+import apiManagerUser.domain.User;
 import apiManagerUser.dto.Login;
 import apiManagerUser.services.TokenService;
 
@@ -29,9 +29,9 @@ public class AuthResources {
 		
 		Authentication auth = this.authM.authenticate(authToken);
 		
-		var admin = (Admin) auth.getPrincipal();
+		var user = (User) auth.getPrincipal();
 		
-		return tokenService.gerarToken(admin);
+		return tokenService.gerarToken(user);
 	}
 	
 }

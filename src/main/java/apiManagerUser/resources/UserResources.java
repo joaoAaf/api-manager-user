@@ -20,45 +20,45 @@ import apiManagerUser.services.UserService;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value="/users")
+@RequestMapping(value = "/users")
 public class UserResources {
 
 	@Autowired
 	private UserService service;
-	
+
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<UserDTO>> findAll () {
+	public ResponseEntity<List<UserDTO>> findAll() {
 		List<User> list = service.findAll();
 		List<UserDTO> listDTO = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
-	
-	@RequestMapping(value ="/{id}", method = RequestMethod.GET)
-	public ResponseEntity<UserDTO> findById (@PathVariable String id) {
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<UserDTO> findById(@PathVariable String id) {
 		User user = service.findById(id);
 		return ResponseEntity.ok().body(new UserDTO(user));
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert (@RequestBody UserDTO userDto){
-		User user = service.fromDTO(userDto);
+	public ResponseEntity<Void> insert(@RequestBody User user) {
+		// User user = service.fromDTO(userDto);
 		user = service.insert(user);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete (@PathVariable String id){
+	public ResponseEntity<Void> delete(@PathVariable String id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update (@RequestBody UserDTO userDto, @PathVariable String id){
-		User user = service.fromDTO(userDto);
+	public ResponseEntity<Void> update(@RequestBody User user, @PathVariable String id) {
+		// User user = service.fromDTO(userDto);
 		user.setId(id);
 		user = service.update(user);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 }
