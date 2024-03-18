@@ -3,19 +3,21 @@ package apiManagerUser.dto;
 import java.io.Serializable;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-public class UserMod implements Serializable {
+public class UserPost implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@NotBlank
 	private String name;
+	@NotBlank
 	@Email
 	private String email;
+	@NotBlank
 	private String login;
+	@NotBlank
 	private String pass;
-
-	public UserMod() {
-	}
-
+	
 	public String getName() {
 		return name;
 	}

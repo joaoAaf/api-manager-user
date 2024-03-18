@@ -24,9 +24,7 @@ public class User implements UserDetails {
 	public User () {
 	}
 
-	public User(String id, String name, String email, String login, String pass) {
-		super();
-		this.id = id;
+	public User(String name, String email, String login, String pass) {
 		this.name = name;
 		this.email = email;
 		this.login = login;

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import apiManagerUser.domain.User;
 import apiManagerUser.dto.UserMod;
+import apiManagerUser.dto.UserPost;
 import apiManagerUser.repository.UserRepository;
 import apiManagerUser.services.exception.ObjectNotFoundException;
 
@@ -63,8 +64,11 @@ public class UserService {
 	}
 
 	public User fromDTO(UserMod userDto) {
-		return new User(userDto.getId(), userDto.getName(), userDto.getEmail(), userDto.getLogin(), 
-		userDto.getPass());
+		return new User(userDto.getName(), userDto.getEmail(), userDto.getLogin(), userDto.getPass());
+	}
+
+	public User fromDTO(UserPost userDto) {
+		return new User(userDto.getName(), userDto.getEmail(), userDto.getLogin(), userDto.getPass());
 	}
 
 }

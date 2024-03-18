@@ -11,8 +11,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import apiManagerUser.domain.User;
 import apiManagerUser.dto.UserMod;
+import apiManagerUser.dto.UserPost;
 import apiManagerUser.dto.UserView;
 import apiManagerUser.services.UserService;
+import jakarta.validation.Valid;
 
 @CrossOrigin
 @RestController
@@ -31,8 +33,8 @@ public class UserResources {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> postUser(@RequestBody UserMod userMod) {
-		User newUser = service.fromDTO(userMod);
+	public ResponseEntity<Void> postUser(@RequestBody @Valid UserPost userPost) {
+		User newUser = service.fromDTO(userPost);
 		newUser = service.insert(newUser);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -47,7 +49,7 @@ public class UserResources {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateUser(@RequestBody UserMod userMod) {
+	public ResponseEntity<Void> updateUser(@RequestBody @Valid UserMod userMod) {
 		User newUser = service.fromDTO(userMod);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String loggedInUserId = authentication.getName();
