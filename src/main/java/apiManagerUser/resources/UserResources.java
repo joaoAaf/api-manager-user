@@ -27,32 +27,33 @@ public class UserResources {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String loggedInUserId = authentication.getName();
 		User user = service.findById(loggedInUserId);
-		if (user == null) {
-			return ResponseEntity.notFound().build();
-		}
 		return ResponseEntity.ok().body(new UserView(user));
 	}
 
 	@PostMapping
 	public ResponseEntity<Void> postUser(@RequestBody UserMod userMod) {
 		User newUser = service.fromDTO(userMod);
-		newUser = service.insertUser(newUser);
+		newUser = service.insert(newUser);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
-	// @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	// public ResponseEntity<Void> delete(@PathVariable String id) {
-	// 	service.delete(id);
-	// 	return ResponseEntity.noContent().build();
-	// }
+	@DeleteMapping
+	public ResponseEntity<Void> deleteUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String loggedInUserId = authentication.getName();
+		service.delete(loggedInUserId);
+		return ResponseEntity.noContent().build();
+	}
 
-	// @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	// public ResponseEntity<Void> update(@RequestBody User user, @PathVariable String id) {
-	// 	// User user = service.fromDTO(userDto);
-	// 	user.setId(id);
-	// 	user = service.update(user);
-	// 	return ResponseEntity.noContent().build();
-	// }
+	@PutMapping
+	public ResponseEntity<Void> updateUser(@RequestBody UserMod userMod) {
+		User newUser = service.fromDTO(userMod);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String loggedInUserId = authentication.getName();
+		newUser.setId(loggedInUserId);
+		newUser = service.update(newUser);
+		return ResponseEntity.noContent().build();
+	}
 
 }

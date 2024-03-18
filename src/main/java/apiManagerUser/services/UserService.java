@@ -31,7 +31,7 @@ public class UserService {
 		return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 
-	public User insertUser(User user) {
+	public User insert(User user) {
 		user.setPass(passEnc().encode(user.getPass()));
 		return repo.insert(user);
 	}
@@ -41,17 +41,25 @@ public class UserService {
 		repo.deleteById(id);
 	}
 
-	public User update(User user) {
-		User newUser = findById(user.getId());
-		updateData(newUser, user);
-		return repo.save(newUser);
+	public User update(User newUser) {
+		User user = findById(newUser.getId());
+		updateData(user, newUser);
+		return repo.save(user);
 	}
 
-	private void updateData(User newUser, User user) {
-		newUser.setName(user.getName());
-		newUser.setEmail(user.getEmail());
-		newUser.setLogin(user.getLogin());
-		newUser.setPass(user.getPass());
+	private void updateData(User oldUser, User newUser) {
+		if (newUser.getName() != oldUser.getName() && newUser.getName() != null) {
+			oldUser.setName(newUser.getName());
+		}
+		if (newUser.getEmail() != oldUser.getEmail() && newUser.getEmail() != null) {
+			oldUser.setEmail(newUser.getEmail());
+		}
+		if (newUser.getLogin() != oldUser.getLogin() && newUser.getLogin() != null) {
+			oldUser.setLogin(newUser.getLogin());
+		}
+		if (newUser.getPass() != oldUser.getPass() && newUser.getPass() != null) {
+			oldUser.setPass(passEnc().encode(newUser.getPass()));
+		}
 	}
 
 	public User fromDTO(UserMod userDto) {
