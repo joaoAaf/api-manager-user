@@ -52,14 +52,18 @@ public class UserService {
 		return repo.save(user);
 	}
 
+	private boolean validateUpdate(String attOldUser, String attNewUser) {
+		return attNewUser != attOldUser && attNewUser!= null && attNewUser!= "";
+	}
+	
 	private void updateData(User oldUser, User newUser) {
-		if (newUser.getName() != oldUser.getName() && newUser.getName() != null) {
+		if (validateUpdate(oldUser.getName(), newUser.getName())) {
 			oldUser.setName(newUser.getName());
 		}
-		if (newUser.getEmail() != oldUser.getEmail() && newUser.getEmail() != null) {
+		if (validateUpdate(oldUser.getEmail(), newUser.getEmail())) {
 			oldUser.setEmail(newUser.getEmail());
 		}
-		if (newUser.getPass() != oldUser.getPass() && newUser.getPass() != null) {
+		if (validateUpdate(oldUser.getPass(), newUser.getPass())) {
 			oldUser.setPass(passEnc().encode(newUser.getPass()));
 		}
 	}
