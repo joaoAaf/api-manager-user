@@ -10,6 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import apiManagerUser.repository.UserRepository;
 import apiManagerUser.services.TokenService;
+import apiManagerUser.services.exception.ObjectNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ public class FilterToken extends OncePerRequestFilter {
 	private TokenService tokenService;
 	
 	@Autowired
-	private UserRepository adminRepo;
+	private UserRepository repo;
 	
 	
 	@Override
@@ -37,7 +38,9 @@ public class FilterToken extends OncePerRequestFilter {
 			
 			var subject = this.tokenService.getSubject(token);
 			
-			var user = this.adminRepo.findByLogin(subject);
+			var userOpt = this.repo.findByEmail(subject);
+
+			var user = userOpt.orElseThrow(() -> new ObjectNotFoundException("Usuário não existe"));
 			
 			var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			

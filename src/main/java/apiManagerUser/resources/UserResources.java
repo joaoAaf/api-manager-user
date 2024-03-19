@@ -39,13 +39,16 @@ public class UserResources {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> postUser(@RequestBody @Valid UserPost userPost) throws IOException {
+	public ResponseEntity<Object> postUser(@RequestBody @Valid UserPost userPost) throws IOException {
 		User newUser = userService.fromDTO(userPost);
+		if (userService.findByEmail(newUser.getEmail()) != null) {
+			return ResponseEntity.badRequest().body("Já Existe um Usuário com este Email!");
+		}
 		newUser = userService.insert(newUser);
 		Email email = emailService.emailContent(newUser);
 		emailService.sendEmail(email);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).body(new UserView(newUser));
 	}
 
 	@DeleteMapping

@@ -27,11 +27,11 @@ public class Instantiation implements CommandLineRunner {
 		fDate.setTimeZone(TimeZone.getTimeZone("GMT"));
 		
 		if(userRepo.count() == 0) {
-			User user1 = new User("Fulano de Tal", "fulano@gmail.com", "fulano","123456");
+			User user1 = new User("Fulano de Tal", "fulano@gmail.com","123456");
 			userServ.insert(user1);
-			User user2 = new User("Sicrano da Silva", "sicrano@gmail.com", "sicrano","123456");
+			User user2 = new User("Sicrano da Silva", "sicrano@gmail.com","123456");
 			userServ.insert(user2);
-			User user3 = new User("Beltrano Costa", "beltrano@gmail.com", "beltrano","123456");
+			User user3 = new User("Beltrano Costa", "beltrano@gmail.com","123456");
 			userServ.insert(user3);
 		}
 		

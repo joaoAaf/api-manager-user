@@ -10,7 +10,6 @@ public class UserView implements Serializable {
 	private String id;
 	private String name;
 	private String email;
-	private String login;
 	
 	public UserView() {
 	}
@@ -19,7 +18,6 @@ public class UserView implements Serializable {
 		id = user.getId();
 		name = user.getName();
 		email = user.getEmail();
-		login = user.getLogin();
 	}
 
 	public String getId() {
@@ -32,10 +30,6 @@ public class UserView implements Serializable {
 
 	public String getEmail() {
 		return email;
-	}
-
-	public String getLogin() {
-		return login;
 	}
 	
 }

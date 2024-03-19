@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import apiManagerUser.repository.UserRepository;
+import apiManagerUser.services.exception.ObjectNotFoundException;
 
 @Service
 public class AuthService implements UserDetailsService {
@@ -15,8 +16,9 @@ public class AuthService implements UserDetailsService {
 	private UserRepository repo;
 	
 	@Override
-	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-		return repo.findByLogin(login);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		var user = repo.findByEmail(email);
+		return user.orElseThrow(() -> new ObjectNotFoundException("Usuário não existe"));
 	}
 
 }

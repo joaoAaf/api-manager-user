@@ -18,16 +18,14 @@ public class User implements UserDetails {
 	private String id;
 	private String name;
 	private String email;
-	private String login;
 	private String pass;
 	
 	public User () {
 	}
 
-	public User(String name, String email, String login, String pass) {
+	public User(String name, String email, String pass) {
 		this.name = name;
 		this.email = email;
-		this.login = login;
 		this.pass = pass;
 	}
 
@@ -53,14 +51,6 @@ public class User implements UserDetails {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
 	}
 
 	public String getPass() {

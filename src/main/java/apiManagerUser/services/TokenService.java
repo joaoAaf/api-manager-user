@@ -16,7 +16,7 @@ public class TokenService {
 	public String gerarToken(User user) {
 		return JWT.create()
 				.withIssuer("Usuários")
-				.withSubject(user.getLogin())
+				.withSubject(user.getEmail())
 				.withClaim("id", user.getId())
 				.withExpiresAt(LocalDateTime.now()
 						.plusMinutes(30)

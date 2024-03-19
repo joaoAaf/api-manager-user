@@ -29,7 +29,11 @@ public class UserService {
 
 	public User findById(String id) {
 		Optional<User> user = repo.findById(id);
-		return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+		return user.orElseThrow(() -> new ObjectNotFoundException("Usuário não existe"));
+	}
+
+	public User findByEmail(String email) {
+		return repo.findByEmail(email).get();
 	}
 
 	public User insert(User user) {
@@ -55,20 +59,17 @@ public class UserService {
 		if (newUser.getEmail() != oldUser.getEmail() && newUser.getEmail() != null) {
 			oldUser.setEmail(newUser.getEmail());
 		}
-		if (newUser.getLogin() != oldUser.getLogin() && newUser.getLogin() != null) {
-			oldUser.setLogin(newUser.getLogin());
-		}
 		if (newUser.getPass() != oldUser.getPass() && newUser.getPass() != null) {
 			oldUser.setPass(passEnc().encode(newUser.getPass()));
 		}
 	}
 
 	public User fromDTO(UserMod userDto) {
-		return new User(userDto.getName(), userDto.getEmail(), userDto.getLogin(), userDto.getPass());
+		return new User(userDto.getName(), userDto.getEmail(), userDto.getPass());
 	}
 
 	public User fromDTO(UserPost userDto) {
-		return new User(userDto.getName(), userDto.getEmail(), userDto.getLogin(), userDto.getPass());
+		return new User(userDto.getName(), userDto.getEmail(), userDto.getPass());
 	}
 
 }
