@@ -35,20 +35,20 @@ public class UserResources {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String loggedInUserId = authentication.getName();
 		User user = userService.findById(loggedInUserId);
-		return ResponseEntity.ok().body(new UserView(user));
+		return ResponseEntity.ok().body(userService.showUser(user));
 	}
 
 	@PostMapping
 	public ResponseEntity<Object> postUser(@RequestBody @Valid UserPost userPost) throws IOException {
 		User newUser = userService.fromDTO(userPost);
-		if (userService.findByEmail(newUser.getEmail()) != null) {
+		if (userService.isEmail(newUser.getEmail())) {
 			return ResponseEntity.badRequest().body("Já Existe um Usuário com este Email!");
 		}
 		newUser = userService.insert(newUser);
 		Email email = emailService.emailContent(newUser);
 		emailService.sendEmail(email);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
-		return ResponseEntity.created(uri).body(new UserView(newUser));
+		return ResponseEntity.created(uri).body(userService.showUser(newUser));
 	}
 
 	@DeleteMapping

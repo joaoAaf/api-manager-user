@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import apiManagerUser.domain.User;
 import apiManagerUser.dto.UserMod;
 import apiManagerUser.dto.UserPost;
+import apiManagerUser.dto.UserView;
 import apiManagerUser.repository.UserRepository;
 import apiManagerUser.services.exception.ObjectNotFoundException;
 
@@ -32,8 +33,8 @@ public class UserService {
 		return user.orElseThrow(() -> new ObjectNotFoundException("Usuário não existe"));
 	}
 
-	public User findByEmail(String email) {
-		return repo.findByEmail(email).get();
+	public boolean isEmail(String email) {
+		return repo.findByEmail(email).isPresent();
 	}
 
 	public User insert(User user) {
@@ -69,11 +70,15 @@ public class UserService {
 	}
 
 	public User fromDTO(UserMod userDto) {
-		return new User(userDto.getName(), userDto.getEmail(), userDto.getPass());
+		return new User(userDto.name(), userDto.email(), userDto.pass());
 	}
 
 	public User fromDTO(UserPost userDto) {
-		return new User(userDto.getName(), userDto.getEmail(), userDto.getPass());
+		return new User(userDto.name(), userDto.email(), userDto.pass());
+	}
+
+	public UserView showUser(User user) {
+		return new UserView(user.getId(), user.getName(), user.getEmail());
 	}
 
 }
