@@ -30,7 +30,7 @@ public class EmailService {
                 + "\",\"subject\":\"" + email.subject() + "\",\"text\":\"" + email.text() + "\",\"category\":\""
                 + email.category() + "\"}", mediaType);
         Request request = new Request.Builder()
-                .url("http://localhost:8080/email")
+                .url("http://"+System.getenv("API_EMAIL")+":8080/email")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();

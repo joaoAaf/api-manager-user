@@ -1,0 +1,48 @@
+networks:
+  api-net:
+    name: api-net
+    driver: bridge
+
+services:
+  db:
+    container_name: db
+    image: mongo
+    restart: always
+    networks:
+      - api-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+  api-users:
+    container_name: api-users
+    build: .
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      - api-net
+    depends_on:
+      - db
+    environment:
+      MONGO_DB_HOST: db
+      API_EMAIL: api-email
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+  api-email:
+    container_name: api-email
+    build: ./api-service-mail
+    restart: always
+    networks:
+      - api-net
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
